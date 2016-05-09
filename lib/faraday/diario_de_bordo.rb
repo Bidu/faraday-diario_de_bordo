@@ -1,7 +1,6 @@
-require "faraday/diario_de_bordo/version"
-
 module Faraday
   module DiarioDeBordo
-    # Your code goes here...
+    require 'faraday/diario_de_bordo/version'
+    require 'faraday/diario_de_bordo/middleware'
   end
 end
