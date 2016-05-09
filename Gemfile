@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in faraday-diario_de_bordo.gemspec
 gemspec
+
+gem 'diario_de_bordo', git: 'git@github.com:Bidu/diario_de_bordo.git', tag: '0.1.3'
