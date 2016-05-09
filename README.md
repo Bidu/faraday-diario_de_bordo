@@ -20,8 +20,9 @@ Or install it yourself as:
 
 ## Usage
 
-1. Create a connection with diario_de_bordo. Instructions in diario_de_bordo's [README](https://github.com/bidu/diario_de_bordo/README.md).
-2. Add middleware to your Faraday connection:
+1: Create a connection with diario_de_bordo. Instructions in diario_de_bordo's [README](https://github.com/bidu/diario_de_bordo/README.md).
+
+2: Add middleware to your Faraday connection:
 
 ```ruby
 Faraday.new do |faraday|
@@ -29,11 +30,23 @@ Faraday.new do |faraday|
 end
 ```
 
+3: Send informations through your request headers:
+
+```ruby
+connection = Faraday.new do |faraday|
+  faraday.response :diario_de_bordo
+end
+
+connection.post(YOUR_ENDPOINT) do |request|
+  request.headers.merge(susep: 1234, template: 'path_to_your_template', external_id: 583723)
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake false` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags.
 
 ## Contributing
 
