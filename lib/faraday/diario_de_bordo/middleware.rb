@@ -1,4 +1,5 @@
 require 'faraday'
+require 'diario_de_bordo'
 
 module Faraday
   class DiarioDeBordo::Middleware < Response::Middleware
@@ -6,12 +7,9 @@ module Faraday
 
     attr_reader :logger, :options, :request_body, :response_body, :started_at, :ended_at
 
-    def initialize(app, logger = nil, options = {})
+    def initialize(app, options = {})
       super(app)
-      @logger = logger || begin
-        require 'diario_de_bordo'
-        ::DiarioDeBordo::Loggers::Database
-      end
+      @logger = ::DiarioDeBordo::Loggers::Database
       @options = DEFAULT_OPTIONS.merge(options)
     end
 
