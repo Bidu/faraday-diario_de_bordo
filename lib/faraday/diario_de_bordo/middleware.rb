@@ -34,7 +34,7 @@ module Faraday
     def response_log(env)
       {
         request: request_body,
-        response: response_body.encode('UTF-8'),
+        response: response_body,
         susep: env.request_headers.delete('susep'),
         method: env.request_headers.delete('template'),
         external_id: env.request_headers.delete('external_id'),
@@ -53,7 +53,7 @@ module Faraday
         body.to_str
       else
         pretty_inspect(body)
-      end
+      end.encode('UTF-8')
     end
 
     def pretty_inspect(body)
