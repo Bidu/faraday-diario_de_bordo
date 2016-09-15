@@ -1,10 +1,10 @@
 require 'faraday'
 require 'diario_de_bordo'
+require 'parameter_filter'
 
 module Faraday
   class DiarioDeBordo::Middleware < Response::Middleware
     DEFAULT_OPTIONS = { bodies: true }
-    FILTERED = '[FILTERED]'.freeze
 
     attr_reader :logger, :options, :request_body, :response_body, :started_at, :ended_at
 
@@ -50,25 +50,13 @@ module Faraday
     end
 
     def dump_body(body)
-      filter_parameters!(body)
+      filtered_body = parameter_filter.call(body)
 
-      if body.respond_to?(:to_str)
-        body.to_str
+      if filtered_body.respond_to?(:to_str)
+        filtered_body.to_str
       else
-        pretty_inspect(body)
+        pretty_inspect(filtered_body)
       end.encode('UTF-8')
-    end
-
-    def filter_parameters!(body)
-      return unless body.is_a?(Hash)
-
-      body.each do |key, value|
-        if value.is_a?(Hash)
-          filter_parameters!(value)
-        else
-          body[key] = FILTERED if options[:filter_parameters].include?(key)
-        end
-      end
     end
 
     def pretty_inspect(body)
@@ -81,6 +69,10 @@ module Faraday
       when Hash then options[:bodies][type]
       else options[:bodies]
       end
+    end
+
+    def parameter_filter
+      @parameter_filter ||= ParameterFilter.new(options[:filter_parameters])
     end
   end
 end
