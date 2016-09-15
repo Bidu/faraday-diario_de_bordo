@@ -60,11 +60,13 @@ module Faraday
     end
 
     def filter_parameters!(body)
-      if body.is_a?(Hash)
-        body.each do |key, _value|
-          if options[:filter_parameters].include?(key)
-            body[key] = FILTERED
-          end
+      return unless body.is_a?(Hash)
+
+      body.each do |key, value|
+        if value.is_a?(Hash)
+          filter_parameters!(value)
+        else
+          body[key] = FILTERED if options[:filter_parameters].include?(key)
         end
       end
     end
