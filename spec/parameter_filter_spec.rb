@@ -6,8 +6,17 @@ describe ParameterFilter do
     context 'when the params is not a hash' do
       subject { described_class.new([]) }
 
-      it 'returns nil' do
-        expect(subject.call('')).to be_nil
+      it 'returns unchanged params' do
+        expect(subject.call('')).to eql ''
+      end
+    end
+
+    context 'when the there is no filter' do
+      subject { described_class.new([]) }
+
+      it 'returns unchanged params' do
+        params = { foo: 'bar' }
+        expect(subject.call(params)).to eql(foo: 'bar')
       end
     end
 

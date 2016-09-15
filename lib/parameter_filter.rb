@@ -6,7 +6,7 @@ class ParameterFilter
   end
 
   def call(params, parents = [])
-    return unless params.is_a?(Hash)
+    return params unless params.is_a?(Hash)
     filtered_params = {}
 
     params.each do |key, value|
